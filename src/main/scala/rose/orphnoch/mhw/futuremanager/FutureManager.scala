@@ -10,20 +10,22 @@ import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label, ScrollPane, TextField}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.HBox
+import scalafxml.core.macros.sfxml
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import scala.language.implicitConversions
 import scala.collection.JavaConverters._
 
-
 object FutureManager extends JFXApp {
-  private val resource = getClass.getResource("main.fxml")
+  println(getClass.getResource("/main.fxml"))
+  private val resource = getClass.getResource("/main.fxml")
   private val root = FXMLView(resource,NoDependencyResolver)
   stage = new scalafx.application.JFXApp.PrimaryStage(){
     title = "MHW 未来予知マネージャー"
     scene = new Scene(new javafx.scene.Scene(root))
   }
 }
+@sfxml
 class FMController(
                   omoteFirst: TextField,
                   omoteSecond: TextField,
@@ -50,9 +52,14 @@ class FMController(
     val ura2 = uraSecond.text.getOrElse("")
     val ura3 = uraThird.text.getOrElse("")
     val lines = OmoteCSV.readAll()
-    val index = lines.last(0)
-    OmoteCSV.writeNext(Array[String](index,omote1,omote2,omote3))
-    UraCSV.writeNext(Array[String](index,ura1,ura2,ura3))
+    if(lines.nonEmpty) {
+      val index = lines.last.apply(0).toInt + 1
+      OmoteCSV.writeNext(Array[String](index.toString, omote1, omote2, omote3))
+      UraCSV.writeNext(Array[String](index.toString, ura1, ura2, ura3))
+    }else{
+      OmoteCSV.writeNext(Array[String]("0","","",""))
+      UraCSV.writeNext(Array[String]("0","","",""))
+    }
   }
   searchButton.onMouseClicked = (event: MouseEvent) => {
     Option(searchTextField.text.value) match {

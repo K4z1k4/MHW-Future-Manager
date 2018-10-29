@@ -10,3 +10,4 @@ libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafxml-core-sfx8" % "0.4"
 )
 mainClass in Compile := Some("rose.orphnoch.mhw.futuremanager.FutureManager")
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
