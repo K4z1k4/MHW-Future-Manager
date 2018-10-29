@@ -1,4 +1,4 @@
-name := "MHW future manager"
+name := "MHW-Future-Manager"
 
 version := "0.1"
 
@@ -9,3 +9,4 @@ libraryDependencies ++= Seq(
   "net.sf.opencsv" % "opencsv" % "2.3",
   "org.scalafx" %% "scalafxml-core-sfx8" % "0.4"
 )
+mainClass in Compile := Some("rose.orphnoch.mhw.futuremanager.FutureManager")
