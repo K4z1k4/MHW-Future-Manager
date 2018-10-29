@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="MHW 未来予知マネージャー" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rose.orphnoch.mhw.futuremanager.FMController">
-  <content>
+
+<Pane prefHeight="368.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rose.orphnoch.mhw.futuremanager.FMController">
+   <children>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <children>
             <TextField fx:id="omoteFirst" layoutX="113.0" layoutY="76.0" prefHeight="25.0" prefWidth="108.0" />
@@ -21,8 +22,8 @@
             <TextField fx:id="uraThird" layoutX="379.0" layoutY="121.0" prefHeight="25.0" prefWidth="108.0" />
             <Button fx:id="registerButton" layoutX="518.0" layoutY="121.0" mnemonicParsing="false" text="登録" />
             <Label fx:id="questCounter" alignment="CENTER_RIGHT" layoutX="112.0" layoutY="282.0" prefHeight="24.0" prefWidth="86.0" text="0" textAlignment="JUSTIFY" />
-            <Button fx:id="questCountUp" layoutX="100.0" layoutY="315.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="26.0" text="+" />
-            <Button fx:id="questCountDown" layoutX="142.0" layoutY="315.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
+            <Button fx:id="questCountUp" layoutX="102.0" layoutY="315.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="26.0" text="+" />
+            <Button fx:id="questCountDown" layoutX="136.0" layoutY="315.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
             <TextField fx:id="searchTextField" alignment="CENTER" layoutX="338.0" layoutY="315.0" promptText="ここに入力して検索" />
             <Button fx:id="searchButton" layoutX="518.0" layoutY="315.0" mnemonicParsing="false" text="検索" />
             <Text layoutX="38.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="表">
@@ -36,7 +37,7 @@
                </font>
             </Text>
             <Text layoutX="115.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="クエストカウント" wrappingWidth="104.13671875" />
-            <Button fx:id="questCountReset" layoutX="178.0" layoutY="315.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="リセット" />
+            <Button fx:id="questCountReset" layoutX="170.0" layoutY="315.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="リセット" />
             <Button fx:id="exitButton" layoutX="518.0" layoutY="76.0" mnemonicParsing="false" text="終了" />
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="162.0" />
             <ScrollPane fx:id="uraSearchResult" layoutX="357.0" layoutY="239.0" prefHeight="66.0" prefWidth="152.0">
@@ -49,6 +50,7 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="136.0" />
                </content>
             </ScrollPane>
-         </children></AnchorPane>
-  </content>
-</TitledPane>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

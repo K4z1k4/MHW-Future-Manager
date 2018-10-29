@@ -9,7 +9,7 @@ import scalafx.beans.property.StringProperty
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label, ScrollPane, TextField}
 import scalafx.scene.input.MouseEvent
-import scalafx.scene.layout.HBox
+import scalafx.scene.layout.{HBox, VBox}
 import scalafxml.core.macros.sfxml
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
@@ -76,7 +76,7 @@ class FMController(
             label
           }
         }
-        uraSearchResult.content = new HBox{
+        uraSearchResult.content = new VBox{
           children = uraResult map {
             line =>
               val label = new Label()
@@ -100,7 +100,7 @@ class FMController(
   }
   questCountDown.onMouseClicked = (event: MouseEvent) => {
       val current = questCounter.text.value.toInt
-      questCounter.setText((current - 1).toString)
+      if(current >= 1)questCounter.setText((current - 1).toString)
   }
   questCountReset.onMouseClicked = (event: MouseEvent) => questCounter.setText("0")
   exitButton.onMouseClicked = (event: MouseEvent) => {
