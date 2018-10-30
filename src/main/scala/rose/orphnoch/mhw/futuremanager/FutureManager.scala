@@ -14,7 +14,6 @@ import scalafxml.core.macros.sfxml
 import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import scala.language.implicitConversions
-import scala.collection.JavaConverters._
 
 object FutureManager extends JFXApp {
   println(getClass.getResource("/main.fxml"))
@@ -45,21 +44,28 @@ class FMController(
                   uraSearchResult: ScrollPane
                   ){
   registerButton.onMouseClicked = (event: MouseEvent) => {
-    val omote1 = omoteFirst.text.getOrElse("")
-    val omote2 = omoteSecond.text.getOrElse("")
-    val omote3 = omoteThird.text.getOrElse("")
-    val ura1 = uraFirst.text.getOrElse("")
-    val ura2 = uraSecond.text.getOrElse("")
-    val ura3 = uraThird.text.getOrElse("")
+    val omote1: String = omoteFirst.text
+    val omote2: String = omoteSecond.text
+    val omote3: String = omoteThird.text
+    val ura1 = uraFirst.text
+    val ura2 = uraSecond.text
+    val ura3 = uraThird.text
     val lines = OmoteCSV.readAll()
-    if(lines.nonEmpty) {
-      val index = lines.last.apply(0).toInt + 1
-      OmoteCSV.writeNext(Array[String](index.toString, omote1, omote2, omote3))
-      UraCSV.writeNext(Array[String](index.toString, ura1, ura2, ura3))
-    }else{
-      OmoteCSV.writeNext(Array[String]("0","","",""))
-      UraCSV.writeNext(Array[String]("0","","",""))
-    }
+      val index = if(lines.nonEmpty)lines.last.apply(0).toInt + 1 else 1
+      if(lines.isEmpty){
+        OmoteCSV.writeNext(Array[String]("id","装飾品1","装飾品2","装飾品3"))
+        UraCSV.writeNext(Array[String]("id","装飾品1","装飾品2","装飾品3"))
+      }
+       if(omote1!="-"||omote2!="-"||omote3!="-"){
+        OmoteCSV.writeNext(Array[String](index.toString, omote1, omote2, omote3))
+        UraCSV.writeNext(Array[String](index.toString, ura1, ura2, ura3))
+        omoteFirst.setText("")
+        omoteSecond.setText("")
+        omoteThird.setText("")
+        uraFirst.setText("")
+        uraSecond.setText("")
+        uraThird.setText("")
+      }
   }
   searchButton.onMouseClicked = (event: MouseEvent) => {
     Option(searchTextField.text.value) match {
@@ -104,42 +110,46 @@ class FMController(
   }
   questCountReset.onMouseClicked = (event: MouseEvent) => questCounter.setText("0")
   exitButton.onMouseClicked = (event: MouseEvent) => {
-    OmoteCSV.close()
-    UraCSV.close()
+    FutureManager.stage.close()
   }
-  private implicit def wrapTextFieldProperty(sp: StringProperty): Option[String] = Option(sp.value)
+  private implicit def convertTextFieldProperty(sp: StringProperty): String = Option(sp.value) map {
+    case "" => "-"
+    case s@_ => s
+  } getOrElse "-"
 }
 trait CSVFile {
   def writeNext(line: Array[String]): Unit
   def readAll(): Seq[Array[String]]
-  def close(): Unit
 }
 object OmoteCSV extends CSVFile {
-  val file = new File("../omote.csv")
-  val writer = new CSVWriter(new FileWriter(file))
-  val reader = new CSVReader(new FileReader(file))
+  val file = new File("omote.csv")
+  println(file.exists())
   override def writeNext(line: Array[String]): Unit = {
-    this.writer.writeNext(line)
-    this.writer.flush()
+    val writer = new CSVWriter(new FileWriter(file,true))
+    writer.writeNext(line)
+    writer.flush()
+    writer.close()
   }
-  override def readAll(): Seq[Array[String]] =  this.reader.readAll().asScala.toList
-  override def close(): Unit = {
-    this.writer.close()
-    this.reader.close()
+  override def readAll(): Seq[Array[String]] = {
+    val reader = new CSVReader(new FileReader(file))
+    val ls = Iterator.continually(reader.readNext()).takeWhile(_ != null).toList
+    reader.close()
+    ls
   }
 }
 object UraCSV extends CSVFile {
-  val file = new File("../ura.csv")
-  val writer = new CSVWriter(new FileWriter(file))
-  val reader = new CSVReader(new FileReader(file))
+  val file = new File("ura.csv")
   override def writeNext(line: Array[String]): Unit = {
-    this.writer.writeNext(line)
-    this.writer.flush()
+    val writer = new CSVWriter(new FileWriter(file,true))
+    writer.writeNext(line)
+    writer.flush()
+    writer.close()
   }
-  override def readAll(): Seq[Array[String]] =  this.reader.readAll().asScala.toList
-  override def close(): Unit = {
-    this.writer.close()
-    this.reader.close()
+  override def readAll(): Seq[Array[String]] =  {
+    val reader = new CSVReader(new FileReader(file))
+    val ls = Iterator.continually(reader.readNext()).takeWhile(_ != null).toList
+    reader.close()
+    ls
   }
 }
 
